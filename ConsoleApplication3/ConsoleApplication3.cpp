@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <algorithm>
 using namespace std;
-
+// Задача следующая: Геттерами, сеттерами, и прочими методами инициализировать массив mas из поля private, заполнить его, а также вызывать. Сортировки, скорее всего, реализовать внутри класса.
 class Credit {
 private:
     int len;
@@ -39,7 +39,12 @@ public:
         percentSum = l.percentSum;
         mas = l.mas;
     }
-    ~Credit() {}
+    ~Credit() {
+        delete[] mas;
+    }
+    void SetLen(int Arrlen) {
+        this->len = Arrlen;
+    }
     void SetAllThings(string inSurName, string inName, string inSecondName, unsigned long long int inSum, double inStavka, int inLen, long int inPer) {
         this->Surname = Surname;
         this->Name = inName;
@@ -150,7 +155,7 @@ long int CreditPlatezh(unsigned long long int const sum, double const stavka, in
 
 }
 
-Credit* ManualEntry(int& length) {
+/*void ManualEntry(Credit* m, int& length) {
     string Surname;
     string Name;
     string SecondName;
@@ -160,7 +165,6 @@ Credit* ManualEntry(int& length) {
     long int percentSum;
     cout << "Введите количество клиентов" << endl;
     length = input();
-    Credit* m = new Credit[length];
     cin.ignore(255, '\n');
     for (int i = 0; i < length; i++) {
         int x = i + 1;
@@ -185,13 +189,27 @@ Credit* ManualEntry(int& length) {
     }
     menu_print();
     cout << "Успешно заполнено" << endl;
-    return m;
+}*/
+void ManualEntry(Credit m, int& length) {
+    string Surname;
+    string Name;
+    string SecondName;
+    unsigned long long int sum;
+    double stavka;
+    int lengthYear;
+    long int percentSum;
+    cout << "Введите количество клиентов" << endl;
+    length = input();
+    cin.ignore(255, '\n');
+    m.SetLen(length);
+    m.SetArrThings();
+
 }
 
 
 int main()
 {
     int n = 1;
-    Credit* m = ManualEntry(n);
-    cout << m[0].getName();
+    Credit m;
+    ManualEntry(m,n);
 }
