@@ -81,14 +81,14 @@ void menu_for_sort() {
     system("cls");
     setlocale(LC_ALL, "Russian");
     cout << "|+++++++++++++++++++++++++++++|" << endl;
-    cout << "|Ïî êàêîìó ñòîëáöó îòñîðòèðîâàòü ìàññèâ?|" << endl;
-    cout << "|1) Ôàìèëèÿ|" << endl;
-    cout << "|2) Èìÿ|" << endl;
-    cout << "|3) Îò÷åñòâî|" << endl;
-    cout << "|4) Ñóììà|" << endl;
-    cout << "|5) Ïðîöåíòíàÿ ñòàâêà|" << endl;
-    cout << "|6) Ñðîê êðåäèòà|" << endl;
-    cout << "|7) Ïåðåïëàòà ïî êðåäèòó|" << endl;
+    cout << "|По какому столбцу отсортировать массив?|" << endl;
+    cout << "|1) Фамилия|" << endl;
+    cout << "|2) Имя|" << endl;
+    cout << "|3) Отчество|" << endl;
+    cout << "|4) Сумма|" << endl;
+    cout << "|5) Процентная ставка|" << endl;
+    cout << "|6) Срок кредита|" << endl;
+    cout << "|7) Переплата по кредиту|" << endl;
     cout << "|+++++++++++++++++++++++++++++|" << endl;
 }
 
@@ -96,19 +96,19 @@ void menu_print() {
     system("cls");
     setlocale(LC_ALL, "Russian");
     cout << "|+++++++++++++++++++++++++++++|" << endl;
-    cout << "|×òî âû õîòèòå ñäåëàòü?|" << endl;
-    cout << "|1) Ââîä äàííûõ|" << endl;
-    cout << "|2) Âûâåñòè äàííûå|" << endl;
-    cout << "|3) Îòñîðòèðîâàòü ïî ïîëþ|" << endl;
-    cout << "|4) Óäàëèòü îäèí ýëåìåíò|" << endl;
-    cout << "|5) Óäàëèòü âñå äàííûå èç êëàññà(ïîâòîð ïðîãðàììû)|" << endl;
-    cout << "|6) Çàïèñàòü äàííûå â ôàéë|" << endl;
-    cout << "|7) Âûõîä|" << endl;
+    cout << "|Что вы хотите сделать?|" << endl;
+    cout << "|1) Ввод данных|" << endl;
+    cout << "|2) Вывести данные|" << endl;
+    cout << "|3) Отсортировать по полю|" << endl;
+    cout << "|4) Удалить один элемент|" << endl;
+    cout << "|5) Удалить все данные из класса(повтор программы)|" << endl;
+    cout << "|6) Записать данные в файл|" << endl;
+    cout << "|7) Выход|" << endl;
     cout << "|+++++++++++++++++++++++++++++|" << endl;
 }
 
 void errmsg() {
-    cout << "Ïðîèçîøëà îøèáêà ïðè ââîäå äàííûõ, ââåäåíî íåäîïóñòèìîå çíà÷åíèå. Ïîâòîðèòå ïîïûòêó." << endl;
+    cout << "Произошла ошибка при вводе данных, введено недопустимое значение. Повторите попытку." << endl;
 }
 
 unsigned long long int input_long() {
@@ -117,7 +117,7 @@ unsigned long long int input_long() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Íåâåðíîå ÷èñëî, ïîâòîðèòå ïîïûòêó" << endl;
+        cout << "Неверное число, повторите попытку" << endl;
     }
     return c;
 }
@@ -128,7 +128,7 @@ double inputDouble() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Íåâåðíîå ÷èñëî, ïîâòîðèòå ïîïûòêó" << endl;
+        cout << "Неверное число, повторите попытку" << endl;
     }
     return c;
 }
@@ -139,11 +139,10 @@ int input() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Íåâåðíîå ÷èñëî, ïîâòîðèòå ïîïûòêó" << endl;
+        cout << "Неверное число, повторите попытку" << endl;
     }
     return c;
 }
-
 
 long int CreditPlatezh(unsigned long long int const sum, double const stavka, int const year) {
     int n = year * 12;
@@ -163,23 +162,23 @@ long int CreditPlatezh(unsigned long long int const sum, double const stavka, in
     double stavka;
     int lengthYear;
     long int percentSum;
-    cout << "Ââåäèòå êîëè÷åñòâî êëèåíòîâ" << endl;
+    cout << "Введите количество клиентов" << endl;
     length = input();
     cin.ignore(255, '\n');
     for (int i = 0; i < length; i++) {
         int x = i + 1;
-        cout << "Ââîä ñòðîêè íîìåð " << x << endl;
-        cout << "Ââåäèòå ôàìèëèþ" << endl;
+        cout << "Ввод строки номер " << x << endl;
+        cout << "Введите фамилию" << endl;
         cin >> Surname;
-        cout << "Ââåäèòå èìÿ" << endl;
+        cout << "Введите имя" << endl;
         cin >> Name;
-        cout << "Ââåäèòå îò÷åñòâî" << endl;
+        cout << "Введите отчество" << endl;
         cin >> SecondName;
-        cout << "Ââåäèòå ñóììó êðåäèòà" << endl;
+        cout << "Введите сумму кредита" << endl;
         sum = input_long();
-        cout << "Ââåäèòå ïðîöåíòíóþ ñòàâêó â ãîä" << endl;
+        cout << "Введите процентную ставку в год" << endl;
         stavka = inputDouble();
-        cout << "Ââåäèòå ñðîê êðåäèòà(â ãîäàõ)" << endl;
+        cout << "Введите срок кредита(в годах)" << endl;
         lengthYear = input();
         percentSum = CreditPlatezh(sum, stavka, lengthYear);
         cin.clear();
@@ -188,7 +187,7 @@ long int CreditPlatezh(unsigned long long int const sum, double const stavka, in
         system("cls");
     }
     menu_print();
-    cout << "Óñïåøíî çàïîëíåíî" << endl;
+    cout << "Успешно заполнено" << endl;
 }*/
 void ManualEntry(Credit m, int& length) {
     string Surname;
@@ -198,7 +197,7 @@ void ManualEntry(Credit m, int& length) {
     double stavka;
     int lengthYear;
     long int percentSum;
-    cout << "Ââåäèòå êîëè÷åñòâî êëèåíòîâ" << endl;
+    cout << "Введите количество клиентов" << endl;
     length = input();
     cin.ignore(255, '\n');
     m.SetLen(length);
