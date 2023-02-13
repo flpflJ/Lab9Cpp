@@ -3,10 +3,9 @@
 #include <Windows.h>
 #include <algorithm>
 using namespace std;
-// Задача следующая: Геттерами, сеттерами, и прочими методами инициализировать массив mas из поля private, заполнить его, а также вызывать. Сортировки, скорее всего, реализовать внутри класса.
+// Задача следующая: 2 класса замутить и все
 class Credit {
 private:
-    int len;
     string Surname;
     string Name;
     string SecondName;
@@ -14,11 +13,9 @@ private:
     double stavka;
     int lengthYear;
     long int percentSum;
-    Credit* mas;
 public:
-    Credit() : len(0), Surname(""), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0), mas(0) {}
-    Credit(int ln, string S, string N, string SN, unsigned long long int sm, double st, int leny, long int perSum, Credit* m) {
-        len = ln;
+    Credit() : Surname(""), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0) {}
+    Credit(string S, string N, string SN, unsigned long long int sm, double st, int leny, long int perSum) {
         Surname = S;
         Name = N;
         SecondName = SN;
@@ -26,10 +23,8 @@ public:
         stavka = st;
         lengthYear = leny;
         percentSum = perSum;
-        mas = m;
     }
     Credit(const Credit& l) {
-        len = l.len;
         Surname = l.Surname;
         Name = l.Name;
         SecondName = l.SecondName;
@@ -37,22 +32,8 @@ public:
         stavka = l.stavka;
         lengthYear = l.lengthYear;
         percentSum = l.percentSum;
-        mas = l.mas;
     }
     ~Credit() {
-        delete[] mas;
-    }
-    void SetLen(int Arrlen) {
-        this->len = Arrlen;
-    }
-    void SetArray() {
-        mas = new Credit[len];
-    }
-    void SetArrThings(string inSur, string cName, string inSN, unsigned long long int cSum, double cstavka, int clengthYear, long int cpercentSum, int i) {
-        mas[i].SetAllThings(inSur, cName, inSN, cSum, cstavka, clengthYear, cpercentSum);
-    }
-    Credit getArr(int i) {
-        return mas[i];
     }
     void SetAllThings(string inSurName, string inName, string inSecondName, unsigned long long int inSum, double inStavka, int inLen, long int inPer) {
         this->Surname = inSurName;
@@ -210,8 +191,7 @@ void ManualEntry(Credit m, int& length) {
     cout << "Введите количество клиентов" << endl;
     length = input();
     cin.ignore(255, '\n');
-    m.SetLen(length);
-    m.SetArray();
+    //m.SetArray(length);
     for (int i = 0; i < length; i++) {
         int x = i + 1;
         cout << "Ввод строки номер " << x << endl;
@@ -230,7 +210,7 @@ void ManualEntry(Credit m, int& length) {
         percentSum = CreditPlatezh(sum, stavka, lengthYear);
         cin.clear();
         cin.sync();
-        m.SetArrThings(Surname, Name, SecondName, sum, stavka, lengthYear, percentSum, i);
+        //m.SetArrThings(Surname, Name, SecondName, sum, stavka, lengthYear, percentSum, i);
     }
 }
 
@@ -240,7 +220,6 @@ int main()
     int n = 1;
     Credit m;
     ManualEntry(m,n);
-    int d = 0;
-    Credit s = m.getArr(d);
-    cout << s.getName();
+    //Credit s = m.getArr(d); // не уверен, что это работает.
+    //cout << s.getName();
 }
