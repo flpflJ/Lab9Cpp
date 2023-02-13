@@ -4,6 +4,12 @@
 #include <algorithm>
 using namespace std;
 // Задача следующая: 2 класса замутить и все
+class CreditContainer {
+private:
+    int len;
+public:
+
+};
 class Credit {
 private:
     string Surname;
