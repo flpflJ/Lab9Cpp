@@ -165,7 +165,7 @@ public:
         mas = new Credit[mas_len];
         this->mas_len = mas_len;
     }
-    void sort_all(Credit* mas, const int& num) const {}
+    void sort_all(const int& num) const;
 };
 
 char* inputString() {
@@ -318,7 +318,7 @@ void FileEntry(CreditContainer& mas, int& length, char* file) {
             char buff[255]{};
             in >> buff;
             char* Surname = new char[strlen(buff)];
-            strcpy(Surname, buff);
+            strcpy_s(Surname,strlen(Surname)+1, buff);
             memset(buff, 0, 255);
             string Name = "";
             in >> Name;
@@ -367,7 +367,7 @@ void FileOutput(CreditContainer mas, int const& length, char* file) {
     }
     out.close();
 }
-void CreditContainer::sort_all(Credit* mas, const int& num) const
+void CreditContainer::sort_all(const int& num) const
 {
     int x = input();
     bool t = false;
@@ -408,52 +408,6 @@ void CreditContainer::sort_all(Credit* mas, const int& num) const
         }
     } while (t == false);
 }
-/*void userSort(Credit*& mas, int const& length) {
-    menu_for_sort();
-    setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-    int x = input();
-    bool t = false;
-    do {
-        switch (x) {
-        case(1):
-            sort(mas, mas + length, compSurname);
-            t = true;
-            break;
-        case(2):
-            sort(mas, mas + length, compName);
-            t = true;
-            break;
-        case(3):
-            sort(mas, mas + length, compSecondName);
-            t = true;
-            break;
-        case(4):
-            sort(mas, mas + length, compSum);
-            t = true;
-            break;
-        case(5):
-            sort(mas, mas + length, compStavka);
-            t = true;
-            break;
-        case(6):
-            sort(mas, mas + length, compLength);
-            t = true;
-            break;
-        case(7):
-            sort(mas, mas + length, compPlatezh);
-            t = true;
-            break;
-        default:
-            errmsg();
-            break;
-            t = false;
-        }
-    } while (t == false);
-    menu_print();
-    cout << "Отсортировано!" << endl;
-}*/
 
 void InputEntry(CreditContainer& mas, int& length) {
     cout << "1) Вручную" << endl;
@@ -477,26 +431,31 @@ int main()
     setlocale(LC_ALL, "Russian");
     bool x = false;
     int l = 0;
-    CreditContainer mas(l);
+    CreditContainer m(l);
     menu_print();
     do {
         int k = input();
         switch (k) {
         case(1):
-            //if (l == 0) { InputEntry(m, l); }
-            //else { DeleteAll(m, l); InputEntry(m, l); }
+            if (l == 0) { InputEntry(m, l); }
+            else { m.Clear(0); InputEntry(m, l); }
             break;
         case(2):
-            //if (l != 0) { mas.PrintAll(); }
+            if (l != 0) { m.PrintAll(); }
             break;
         case(3):
-            //if (l != 0) { userSort(m, l); }
+            if (l != 0) { 
+                menu_for_sort();
+                m.sort_all(l); 
+                menu_print();
+                cout << "Отсортировано!" << endl;
+            }
             break;
         case(4):
-            //if (l != 0) { StrokaDelete(m, l); }
+            if (l != 0) { StrokaDelete(m, l); }
             break;
         case(5):
-            //if (l != 0) { DeleteAll(m, l); }
+            if (l != 0) { m.Clear(0); }
             break;
         case(6):
             if (l != 0) {
@@ -504,11 +463,11 @@ int main()
                 cout << "Введите название выходного файла(например:Output.txt) не более 255 символов, учитывая расширение" << endl;
                 cin.ignore(255, '\n');
                 file = inputString();
-                //FileOutput(m, l, file);
+                FileOutput(m, l, file);
             }
             break;
         case(7):
-            //if (l != 0) { DeleteAll(m, l); }
+            if (l != 0) { m.Clear(l); }
             x = true;
             break;
         default:
