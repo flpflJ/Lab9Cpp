@@ -2,8 +2,9 @@
 #include <string>
 #include <Windows.h>
 #include <algorithm>
+#include <ostream>
 using namespace std;
-// Задача следующая: 2 класса замутить и все
+// Р—Р°РґР°С‡Р° СЃР»РµРґСѓСЋС‰Р°СЏ: 2 РєР»Р°СЃСЃР° Р·Р°РјСѓС‚РёС‚СЊ Рё РІСЃРµ
 class Credit {
 private:
     char* Surname;
@@ -84,13 +85,13 @@ public:
     }
     void PrintAllThings() {
         cout << "+++++++++++++++++++++++++++++++++++++++++" << endl;
-        cout << "Фамилия: " << Surname << endl;
-        cout << "Имя: " << Name << endl;
-        cout << "Отчество: " << SecondName << endl;
-        cout << "Сумма кредита: " << sum << endl;
-        cout << "Процентная ставка в год: " << stavka << "%" << endl;
-        cout << "Срок кредита: " << lengthYear << " лет/года" << endl;
-        cout << "Переплата по кредиту составляет: " << percentSum << " условных единиц" << endl;
+        cout << "Р¤Р°РјРёР»РёСЏ: " << Surname << endl;
+        cout << "РРјСЏ: " << Name << endl;
+        cout << "РћС‚С‡РµСЃС‚РІРѕ: " << SecondName << endl;
+        cout << "РЎСѓРјРјР° РєСЂРµРґРёС‚Р°: " << sum << endl;
+        cout << "РџСЂРѕС†РµРЅС‚РЅР°СЏ СЃС‚Р°РІРєР° РІ РіРѕРґ: " << stavka << "%" << endl;
+        cout << "РЎСЂРѕРє РєСЂРµРґРёС‚Р°: " << lengthYear << " Р»РµС‚/РіРѕРґР°" << endl;
+        cout << "РџРµСЂРµРїР»Р°С‚Р° РїРѕ РєСЂРµРґРёС‚Сѓ СЃРѕСЃС‚Р°РІР»СЏРµС‚: " << percentSum << " СѓСЃР»РѕРІРЅС‹С… РµРґРёРЅРёС†" << endl;
         cout << "+++++++++++++++++++++++++++++++++++++++++" << endl;
     }
 };
@@ -123,7 +124,29 @@ public:
             mas[i].SetThings(Surname, Name, SecondName, sum, stavka, len);
         }
     }
+    void PrintAll() {
+        for (int i = 0; i < mas_len; i++) {
+            cout << "РљР»РёРµРЅС‚ в„– " << i + 1 << endl;
+            mas[i].PrintAllThings();
+        }
+    }
+    void Clear(int mas_len){
+        if (mas) {
+            delete[] mas;
+        }
+        mas = new Credit[mas_len];
+        this->mas_len = mas_len;
+    }
 };
+
+char* inputString() {
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    char* stringInput = new char[255];
+    cin.getline(stringInput, 255, '\n');
+    return stringInput;
+}
 
 unsigned long long int input_long() {
     unsigned long long int c = 0;
@@ -131,7 +154,7 @@ unsigned long long int input_long() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Неверное число, повторите попытку" << endl;
+        cout << "РќРµРІРµСЂРЅРѕРµ С‡РёСЃР»Рѕ, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ" << endl;
     }
     return c;
 }
@@ -142,7 +165,7 @@ double inputDouble() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Неверное число, повторите попытку" << endl;
+        cout << "РќРµРІРµСЂРЅРѕРµ С‡РёСЃР»Рѕ, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ" << endl;
     }
     return c;
 }
@@ -153,7 +176,7 @@ int input() {
         cin.clear();
         cin.sync();
         cin.ignore(1000, '\n');
-        cout << "Неверное число, повторите попытку" << endl;
+        cout << "РќРµРІРµСЂРЅРѕРµ С‡РёСЃР»Рѕ, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ" << endl;
     }
     return c;
 }
@@ -162,14 +185,14 @@ void menu_for_sort() {
     system("cls");
     setlocale(LC_ALL, "Russian");
     cout << "|+++++++++++++++++++++++++++++|" << endl;
-    cout << "|По какому столбцу отсортировать массив?|" << endl;
-    cout << "|1) Фамилия|" << endl;
-    cout << "|2) Имя|" << endl;
-    cout << "|3) Отчество|" << endl;
-    cout << "|4) Сумма|" << endl;
-    cout << "|5) Процентная ставка|" << endl;
-    cout << "|6) Срок кредита|" << endl;
-    cout << "|7) Переплата по кредиту|" << endl;
+    cout << "|РџРѕ РєР°РєРѕРјСѓ СЃС‚РѕР»Р±С†Сѓ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РјР°СЃСЃРёРІ?|" << endl;
+    cout << "|1) Р¤Р°РјРёР»РёСЏ|" << endl;
+    cout << "|2) РРјСЏ|" << endl;
+    cout << "|3) РћС‚С‡РµСЃС‚РІРѕ|" << endl;
+    cout << "|4) РЎСѓРјРјР°|" << endl;
+    cout << "|5) РџСЂРѕС†РµРЅС‚РЅР°СЏ СЃС‚Р°РІРєР°|" << endl;
+    cout << "|6) РЎСЂРѕРє РєСЂРµРґРёС‚Р°|" << endl;
+    cout << "|7) РџРµСЂРµРїР»Р°С‚Р° РїРѕ РєСЂРµРґРёС‚Сѓ|" << endl;
     cout << "|+++++++++++++++++++++++++++++|" << endl;
 }
 
@@ -177,98 +200,257 @@ void menu_print() {
     system("cls");
     setlocale(LC_ALL, "Russian");
     cout << "|+++++++++++++++++++++++++++++|" << endl;
-    cout << "|Что вы хотите сделать?|" << endl;
-    cout << "|1) Ввод данных|" << endl;
-    cout << "|2) Вывести данные|" << endl;
-    cout << "|3) Отсортировать по полю|" << endl;
-    cout << "|4) Удалить один элемент|" << endl;
-    cout << "|5) Удалить все данные из класса(повтор программы)|" << endl;
-    cout << "|6) Записать данные в файл|" << endl;
-    cout << "|7) Выход|" << endl;
+    cout << "|Р§С‚Рѕ РІС‹ С…РѕС‚РёС‚Рµ СЃРґРµР»Р°С‚СЊ?|" << endl;
+    cout << "|1) Р’РІРѕРґ РґР°РЅРЅС‹С…|" << endl;
+    cout << "|2) Р’С‹РІРµСЃС‚Рё РґР°РЅРЅС‹Рµ|" << endl;
+    cout << "|3) РћС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ РїРѕР»СЋ|" << endl;
+    cout << "|4) РЈРґР°Р»РёС‚СЊ РѕРґРёРЅ СЌР»РµРјРµРЅС‚|" << endl;
+    cout << "|5) РЈРґР°Р»РёС‚СЊ РІСЃРµ РґР°РЅРЅС‹Рµ РёР· РєР»Р°СЃСЃР°(РїРѕРІС‚РѕСЂ РїСЂРѕРіСЂР°РјРјС‹)|" << endl;
+    cout << "|6) Р—Р°РїРёСЃР°С‚СЊ РґР°РЅРЅС‹Рµ РІ С„Р°Р№Р»|" << endl;
+    cout << "|7) Р’С‹С…РѕРґ|" << endl;
     cout << "|+++++++++++++++++++++++++++++|" << endl;
 }
 
 void errmsg() {
-    cout << "Произошла ошибка при вводе данных, введено недопустимое значение. Повторите попытку." << endl;
+    cout << "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё РІРІРѕРґРµ РґР°РЅРЅС‹С…, РІРІРµРґРµРЅРѕ РЅРµРґРѕРїСѓСЃС‚РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ. РџРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ." << endl;
 }
 
-/*void ManualEntry(Credit* m, int& length) {
-    string Surname;
-    string Name;
-    string SecondName;
-    unsigned long long int sum;
-    double stavka;
-    int lengthYear;
-    long int percentSum;
-    cout << "Введите количество клиентов" << endl;
+void ManualEntry(CreditContainer& mas, int& length) {
+    cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ РєР»РёРµРЅС‚РѕРІ" << endl;
     length = input();
+    char* Surname = 0;
+    string Name = "";
+    string SecondName = "";
+    unsigned long long int sum = 0;
+    int stavka = 0;
+    int lengthYear = 0;
+    mas.Clear(length);
     cin.ignore(255, '\n');
     for (int i = 0; i < length; i++) {
         int x = i + 1;
-        cout << "Ввод строки номер " << x << endl;
-        cout << "Введите фамилию" << endl;
-        cin >> Surname;
-        cout << "Введите имя" << endl;
-        cin >> Name;
-        cout << "Введите отчество" << endl;
-        cin >> SecondName;
-        cout << "Введите сумму кредита" << endl;
+        cout << "Р’РІРѕРґ СЃС‚СЂРѕРєРё РЅРѕРјРµСЂ " << x << endl;
+        cout << "Р’РІРµРґРёС‚Рµ С„Р°РјРёР»РёСЋ" << endl;
+        Surname = inputString();
+        cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ" << endl;
+        Name = inputString();
+        cout << "Р’РІРµРґРёС‚Рµ РѕС‚С‡РµСЃС‚РІРѕ" << endl;
+        SecondName = inputString();
+        cout << "Р’РІРµРґРёС‚Рµ СЃСѓРјРјСѓ РєСЂРµРґРёС‚Р°" << endl;
         sum = input_long();
-        cout << "Введите процентную ставку в год" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РїСЂРѕС†РµРЅС‚РЅСѓСЋ СЃС‚Р°РІРєСѓ РІ РіРѕРґ" << endl;
         stavka = inputDouble();
-        cout << "Введите срок кредита(в годах)" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ СЃСЂРѕРє РєСЂРµРґРёС‚Р°(РІ РіРѕРґР°С…)" << endl;
         lengthYear = input();
-        percentSum = CreditPlatezh(sum, stavka, lengthYear);
         cin.clear();
         cin.sync();
-        m[i].SetAllThings(Surname, Name, SecondName, sum, stavka, lengthYear, percentSum);
         system("cls");
+        mas.Set_Mas_Things(i, Surname, Name, SecondName, sum, stavka, lengthYear);
     }
     menu_print();
-    cout << "Успешно заполнено" << endl;
-}*/
-/*void ManualEntry(Credit m, int& length) {
-    string Surname;
-    string Name;
-    string SecondName;
-    unsigned long long int sum;
-    double stavka;
-    int lengthYear;
-    long int percentSum;
-    cout << "Введите количество клиентов" << endl;
-    length = input();
-    cin.ignore(255, '\n');
-    //m.SetArray(length);
-    for (int i = 0; i < length; i++) {
-        int x = i + 1;
-        cout << "Ввод строки номер " << x << endl;
-        cout << "Введите фамилию" << endl;
-        cin >> Surname;
-        cout << "Введите имя" << endl;
-        cin >> Name;
-        cout << "Введите отчество" << endl;
-        cin >> SecondName;
-        cout << "Введите сумму кредита" << endl;
-        sum = input_long();
-        cout << "Введите процентную ставку в год" << endl;
-        stavka = inputDouble();
-        cout << "Введите срок кредита(в годах)" << endl;
-        lengthYear = input();
-        percentSum = CreditPlatezh(sum, stavka, lengthYear);
-        cin.clear();
-        cin.sync();
-        //m.SetArrThings(Surname, Name, SecondName, sum, stavka, lengthYear, percentSum, i);
+    cout << "РЈСЃРїРµС€РЅРѕ Р·Р°РїРѕР»РЅРµРЅРѕ" << endl;
+}
+
+void DataOutputConsole(CreditContainer& mas, int const& length) { // ready!
+        mas.PrintAll();
+}
+
+/*void StrokaDelete(CreditContainer& mas, int& length) {
+    cout << "Р’РІРµРґРёС‚Рµ, РєР°РєРѕР№ СЌР»РµРјРµРЅС‚ РІС‹ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ" << endl;
+    int elDel = input();
+    --elDel;
+    cout << elDel;
+    if (elDel >= 0 && elDel < length) {
+        Credit* buffer = new Credit[length];
+        for (int i = 0; i < length; i++) {
+            buffer[i] = mas[i];
+        }
+        --length;
+        int k = 0;
+        mas = new Credit[length];
+        for (int i = 0; i < (length + 1); i++) {
+            if (i != elDel) {
+                mas[k] = buffer[i];
+                k++;
+            }
+        }
+        delete[] buffer;
+        cout << "Р­Р»РµРјРµРЅС‚ СѓРґР°Р»РµРЅ" << endl;
+    }
+    else {
+        cout << "РќРµРєРєРѕСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ РЅРѕРјРµСЂР°!" << endl;
     }
 }*/
 
+void FileEntry(int& length, char* file) {
+    ifstream in(file);
+    if (in.is_open()) {
+        in >> length;
+        for (int i = 0; i < length; i++) {
+            char buff[255]{};
+            in >> buff;
+            char* Surname = new char[strlen(buff)];
+            strcpy(Surname, buff);
+            memset(buff, 0, 255);
+            string Name = "";
+            in >> Name;
+            string SecondName = "";
+            in >> SecondName;
+            in >> sum;
+            in >> stavka;
+            in >> lengthYear;
+        }
+        menu_print();
+        cout << "Р§С‚РµРЅРёРµ РёР· С„Р°Р№Р»Р° РїСЂРѕРёР·РѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ" << endl;
+    }
+    else {
+        menu_print();
+        cout << "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє, С„Р°Р№Р» РЅРµ РѕС‚РєСЂС‹С‚!" << endl;
+    }
+    in.close();
+}
+
+void FileOutput(Credit const* mas, int const& length, char* file) {
+    ofstream out;
+    out.open(file);
+    if (out.is_open()) {
+        out << length << endl;
+        for (int i = 0; i < length; i++) {
+            int x = i + 1;
+            out << "+++++++++++++++++++++++++++++++++++++++++" << endl;
+            out << "РљР»РёРµРЅС‚ в„– " << x << endl;
+            out << "Р¤Р°РјРёР»РёСЏ: " << mas[i].Surname << endl;
+            out << "РРјСЏ: " << mas[i].Name << endl;
+            out << "РћС‚С‡РµСЃС‚РІРѕ: " << mas[i].SecondName << endl;
+            out << "РЎСѓРјРјР° РєСЂРµРґРёС‚Р°: " << mas[i].sum << " СѓСЃР»РѕРІРЅС‹С… РµРґРёРЅРёС†" << endl;
+            out << "РџСЂРѕС†РµРЅС‚РЅР°СЏ СЃС‚Р°РІРєР° РІ РіРѕРґ: " << mas[i].stavka << "%" << endl;
+            out << "РЎСЂРѕРє РєСЂРµРґРёС‚Р°(РІ РіРѕРґР°С…): " << mas[i].lengthYear << endl;;
+            out << "РџРµСЂРµРїР»Р°С‚Р° РїРѕ РєСЂРµРґРёС‚Сѓ: " << mas[i].percentSum << " СѓСЃР»РѕРІРЅС‹С… РµРґРёРЅРёС†" << endl;
+            out << "+++++++++++++++++++++++++++++++++++++++++" << endl;
+        }
+        cout << "Р—Р°РїРёСЃСЊ РІ С„Р°Р№Р» СѓСЃРїРµС€РЅРѕ Р·Р°РІРµСЂС€РµРЅР°" << endl;
+    }
+    else {
+        cout << "РћС€РёР±РєР°, С„Р°Р№Р» РЅРµ РѕС‚РєСЂС‹С‚" << endl;
+    }
+    out.close();
+}
+
+bool compSurname(const Credit& p1, const Credit& p2) { return strncmp(p2.Surname, p1.Surname, 255) > 0; }
+bool compName(Credit& p1, Credit& p2) { return strncmp(p2.Name, p1.Name, 255) > 0; }
+bool compSecondName(Credit& p1, Credit& p2) { return strncmp(p2.SecondName, p1.SecondName, 255) > 0; }
+bool compSum(Credit& p1, Credit& p2) { return p2.sum < p1.sum; }
+bool compStavka(Credit& p1, Credit& p2) { return p2.stavka < p1.stavka; }
+bool compLength(Credit& p1, Credit& p2) { return p2.lengthYear < p1.lengthYear; }
+bool compPlatezh(Credit& p1, Credit& p2) { return p2.percentSum < p1.percentSum; }
+
+void userSort(Credit*& mas, int const& length) {
+    menu_for_sort();
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    int x = input();
+    bool t = false;
+    do {
+        switch (x) {
+        case(1):
+            sort(mas, mas + length, compSurname);
+            t = true;
+            break;
+        case(2):
+            sort(mas, mas + length, compName);
+            t = true;
+            break;
+        case(3):
+            sort(mas, mas + length, compSecondName);
+            t = true;
+            break;
+        case(4):
+            sort(mas, mas + length, compSum);
+            t = true;
+            break;
+        case(5):
+            sort(mas, mas + length, compStavka);
+            t = true;
+            break;
+        case(6):
+            sort(mas, mas + length, compLength);
+            t = true;
+            break;
+        case(7):
+            sort(mas, mas + length, compPlatezh);
+            t = true;
+            break;
+        default:
+            errmsg();
+            break;
+            t = false;
+        }
+    } while (t == false);
+    menu_print();
+    cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРѕ!" << endl;
+}
+
+void InputEntry(Credit*& mas, int& length) {
+    cout << "1) Р’СЂСѓС‡РЅСѓСЋ" << endl;
+    cout << "2) РЎ С„Р°Р№Р»Р°" << endl;
+    int x = input();
+    switch (x) {
+    case(1):
+        ManualEntry(mas, length);
+        break;
+    case(2):
+        cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°(РЅР°РїСЂРёРјРµСЂ: Input.txt)" << endl;
+        cin.ignore(255, '\n');
+        char* filename = inputString();
+        FileEntry(mas, length, filename);
+        break;
+    }
+}
 
 int main()
 {
     setlocale(LC_ALL, "Russian");
-    int n = 1;
-    Credit m;
-    cout << "ABCD";
-    //ManualEntry(m,n);
-    //Credit s = m.getArr(d); // не уверен, что это работает.
-    //cout << s.getName();
+    bool x = false;
+    int l = 0;
+    CreditContainer mas(l);
+    menu_print();
+    do {
+        int k = input();
+        switch (k) {
+        case(1):
+            if (l == 0) { InputEntry(m, l); }
+            else { DeleteAll(m, l); InputEntry(m, l); }
+            break;
+        case(2):
+            if (l != 0) { mas.PrintAll(); }
+            break;
+        case(3):
+            if (l != 0) { userSort(m, l); }
+            break;
+        case(4):
+            if (l != 0) { StrokaDelete(m, l); }
+            break;
+        case(5):
+            if (l != 0) { DeleteAll(m, l); }
+            break;
+        case(6):
+            if (l != 0) {
+                char* file = NULL;
+                cout << "Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РІС‹С…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°(РЅР°РїСЂРёРјРµСЂ:Output.txt) РЅРµ Р±РѕР»РµРµ 255 СЃРёРјРІРѕР»РѕРІ, СѓС‡РёС‚С‹РІР°СЏ СЂР°СЃС€РёСЂРµРЅРёРµ" << endl;
+                cin.ignore(255, '\n');
+                file = inputString();
+                FileOutput(m, l, file);
+            }
+            break;
+        case(7):
+            if (l != 0) { DeleteAll(m, l); }
+            x = true;
+            break;
+        default:
+            menu_print();
+            errmsg();
+            break;
+        }
+    } while (x == false);
+    return 0;
 }
