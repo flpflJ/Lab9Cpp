@@ -4,15 +4,9 @@
 #include <algorithm>
 using namespace std;
 // Задача следующая: 2 класса замутить и все
-class CreditContainer {
-private:
-    int len;
-public:
-
-};
 class Credit {
 private:
-    string Surname;
+    char* Surname;
     string Name;
     string SecondName;
     unsigned long long int sum;
@@ -20,9 +14,11 @@ private:
     int lengthYear;
     long int percentSum;
 public:
-    Credit() : Surname(""), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0) {}
-    Credit(string S, string N, string SN, unsigned long long int sm, double st, int leny, long int perSum) {
-        Surname = S;
+    Credit() : Surname(0), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0) {}
+    Credit(char* S, string N, string SN, unsigned long long int sm, double st, int leny, long int perSum) {
+
+        Surname = new char[strlen(S)+1];
+        strcpy_s(Surname, strlen(s) + 1, S);
         Name = N;
         SecondName = SN;
         sum = sm;
@@ -30,8 +26,10 @@ public:
         lengthYear = leny;
         percentSum = perSum;
     }
+
     Credit(const Credit& l) {
-        Surname = l.Surname;
+        Surname = new char[strlen(l.Surname) + 1];
+        strcpy_s(Surname, strlen(l.Surname) + 1, l.Surname);
         Name = l.Name;
         SecondName = l.SecondName;
         sum = l.sum;
@@ -40,19 +38,31 @@ public:
         percentSum = l.percentSum;
     }
     ~Credit() {
+        if (Surname) { delete[] Surname; }
     }
-    void SetAllThings(string inSurName, string inName, string inSecondName, unsigned long long int inSum, double inStavka, int inLen, long int inPer) {
-        this->Surname = inSurName;
-        this->Name = inName;
-        this->SecondName = inSecondName;
-        this->sum = inSum;
-        this->stavka = inStavka;
-        this->lengthYear = inLen;
-        this->percentSum = inPer;
+    long int CreditPlatezh(unsigned long long int const sum, double const stavka, int const year) {
+        int n = year * 12;
+        double P = (stavka / 12) / 100;
+        double x = sum * (P + (P / (pow(1 + P, n) - 1)));
+        x = x * n;
+        long int platezh = x - sum;
+        return platezh;
     }
-    
-    string getSurname() {
+    void SetThings(char* S, string N, string SN, unsigned long long int sm, double st, int leny, long int perSum){
+        Surname = new char[strlen(S) + 1];
+        strcpy_s(Surname, strlen(S) + 1, S);
+        Name = N;
+        SecondName = SN;
+        sum = sm;
+        stavka = st;
+        lengthYear = leny;
+        percentSum = perSum;
+    }
+    char* getSurname() {
         return Surname;
+    }
+    int getSurnameLength() {
+        return (strlen(Surname)+1);
     }
     string getName() {
         return Name;
@@ -72,6 +82,14 @@ public:
     long int getPerSum() {
         return percentSum;
     }
+};
+
+class CreditContainer {
+private:
+    int mas_len;
+    Credit* mas;
+public:
+
 };
 
 unsigned long long int input_long() {
@@ -105,16 +123,6 @@ int input() {
         cout << "Неверное число, повторите попытку" << endl;
     }
     return c;
-}
-
-long int CreditPlatezh(unsigned long long int const sum, double const stavka, int const year) {
-    int n = year * 12;
-    double P = (stavka / 12) / 100;
-    double x = sum * (P + (P / (pow(1 + P, n) - 1)));
-    x = x * n;
-    long int platezh = x - sum;
-    return platezh;
-
 }
 
 void menu_for_sort() {
