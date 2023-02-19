@@ -2,7 +2,7 @@
 #include <string>
 #include <Windows.h>
 #include <algorithm>
-#include <ostream>
+#include <fstream>
 using namespace std;
 // Задача следующая: 2 класса замутить и все
 class Credit {
@@ -94,6 +94,13 @@ public:
         cout << "Переплата по кредиту составляет: " << percentSum << " условных единиц" << endl;
         cout << "+++++++++++++++++++++++++++++++++++++++++" << endl;
     }
+    static bool compSurname(const Credit& p1, const Credit& p2) { return p2.Surname < p1.Surname; }
+    static bool compName(Credit& p1, Credit& p2) { return p2.Name < p1.Name; }
+    static bool compSecondName(Credit& p1, Credit& p2) { return p2.SecondName < p1.SecondName; }
+    static bool compSum(Credit& p1, Credit& p2) { return p2.sum < p1.sum; }
+    static bool compStavka(Credit& p1, Credit& p2) { return p2.stavka < p1.stavka; }
+    static bool compLength(Credit& p1, Credit& p2) { return p2.lengthYear < p1.lengthYear; }
+    static bool compPlatezh(Credit& p1, Credit& p2) { return p2.percentSum < p1.percentSum; }
 };
 
 class CreditContainer {
@@ -130,6 +137,27 @@ public:
             mas[i].PrintAllThings();
         }
     }
+    char* getMasSurname(int i) {
+        return mas[i].getSurname();
+    }
+    string getMasName(int i) {
+        return mas[i].getName();
+    }
+    string getMasSecondName(int i) {
+        return mas[i].getSecondName();
+    }
+    unsigned long long int getMasSum(int i) {
+        return mas[i].getSum();
+    }
+    double getMasStavka(int i) {
+        return mas[i].getStavka();
+    }
+    int getMasLen(int i) {
+        return mas[i].getLen();
+    }
+    long int getMasPerSum(int i) {
+        return mas[i].getPerSum();
+    }
     void Clear(int mas_len){
         if (mas) {
             delete[] mas;
@@ -137,6 +165,7 @@ public:
         mas = new Credit[mas_len];
         this->mas_len = mas_len;
     }
+    void sort_all(Credit* mas, const int& num) const {}
 };
 
 char* inputString() {
@@ -254,35 +283,35 @@ void DataOutputConsole(CreditContainer& mas, int const& length) { // ready!
         mas.PrintAll();
 }
 
-/*void StrokaDelete(CreditContainer& mas, int& length) {
+void StrokaDelete(CreditContainer& mas, int& length) {
     cout << "Введите, какой элемент вы хотите удалить" << endl;
     int elDel = input();
     --elDel;
     cout << elDel;
     if (elDel >= 0 && elDel < length) {
-        Credit* buffer = new Credit[length];
+        CreditContainer buffer(length);
         for (int i = 0; i < length; i++) {
-            buffer[i] = mas[i];
+            buffer = mas;
         }
         --length;
         int k = 0;
-        mas = new Credit[length];
+        mas.Clear(length);
         for (int i = 0; i < (length + 1); i++) {
             if (i != elDel) {
-                mas[k] = buffer[i];
+                mas.Set_Mas_Things(i, buffer.getMasSurname(i), buffer.getMasName(i), buffer.getMasSecondName(i), buffer.getMasSum(i), buffer.getMasStavka(i), buffer.getMasLen(i));
                 k++;
             }
         }
-        delete[] buffer;
         cout << "Элемент удален" << endl;
     }
     else {
         cout << "Неккоректный ввод номера!" << endl;
     }
-}*/
+}
 
-void FileEntry(int& length, char* file) {
+void FileEntry(CreditContainer& mas, int& length, char* file) {
     ifstream in(file);
+    mas.Clear(length);
     if (in.is_open()) {
         in >> length;
         for (int i = 0; i < length; i++) {
@@ -295,9 +324,13 @@ void FileEntry(int& length, char* file) {
             in >> Name;
             string SecondName = "";
             in >> SecondName;
+            unsigned long long int sum = 0;
             in >> sum;
+            double stavka = 0;
             in >> stavka;
+            int lengthYear = 0;
             in >> lengthYear;
+            mas.Set_Mas_Things(i, Surname, Name, SecondName, sum, stavka, lengthYear);
         }
         menu_print();
         cout << "Чтение из файла произошло успешно" << endl;
@@ -309,7 +342,7 @@ void FileEntry(int& length, char* file) {
     in.close();
 }
 
-void FileOutput(Credit const* mas, int const& length, char* file) {
+void FileOutput(CreditContainer mas, int const& length, char* file) {
     ofstream out;
     out.open(file);
     if (out.is_open()) {
@@ -318,13 +351,13 @@ void FileOutput(Credit const* mas, int const& length, char* file) {
             int x = i + 1;
             out << "+++++++++++++++++++++++++++++++++++++++++" << endl;
             out << "Клиент № " << x << endl;
-            out << "Фамилия: " << mas[i].Surname << endl;
-            out << "Имя: " << mas[i].Name << endl;
-            out << "Отчество: " << mas[i].SecondName << endl;
-            out << "Сумма кредита: " << mas[i].sum << " условных единиц" << endl;
-            out << "Процентная ставка в год: " << mas[i].stavka << "%" << endl;
-            out << "Срок кредита(в годах): " << mas[i].lengthYear << endl;;
-            out << "Переплата по кредиту: " << mas[i].percentSum << " условных единиц" << endl;
+            out << "Фамилия: " << mas.getMasSurname(i) << endl;
+            out << "Имя: " << mas.getMasName(i) << endl;
+            out << "Отчество: " << mas.getMasSecondName(i) << endl;
+            out << "Сумма кредита: " << mas.getMasSum(i) << " условных единиц" << endl;
+            out << "Процентная ставка в год: " << mas.getMasStavka(i) << "%" << endl;
+            out << "Срок кредита(в годах): " << mas.getMasLen(i) << endl;;
+            out << "Переплата по кредиту: " << mas.getMasPerSum(i) << " условных единиц" << endl;
             out << "+++++++++++++++++++++++++++++++++++++++++" << endl;
         }
         cout << "Запись в файл успешно завершена" << endl;
@@ -334,16 +367,48 @@ void FileOutput(Credit const* mas, int const& length, char* file) {
     }
     out.close();
 }
-
-bool compSurname(const Credit& p1, const Credit& p2) { return strncmp(p2.Surname, p1.Surname, 255) > 0; }
-bool compName(Credit& p1, Credit& p2) { return strncmp(p2.Name, p1.Name, 255) > 0; }
-bool compSecondName(Credit& p1, Credit& p2) { return strncmp(p2.SecondName, p1.SecondName, 255) > 0; }
-bool compSum(Credit& p1, Credit& p2) { return p2.sum < p1.sum; }
-bool compStavka(Credit& p1, Credit& p2) { return p2.stavka < p1.stavka; }
-bool compLength(Credit& p1, Credit& p2) { return p2.lengthYear < p1.lengthYear; }
-bool compPlatezh(Credit& p1, Credit& p2) { return p2.percentSum < p1.percentSum; }
-
-void userSort(Credit*& mas, int const& length) {
+void CreditContainer::sort_all(Credit* mas, const int& num) const
+{
+    int x = input();
+    bool t = false;
+    do {
+        switch (x) {
+        case(1):
+            std::sort(mas, mas + num, Credit::compSurname);
+            t = true;
+            break;
+        case(2):
+            std::sort(mas, mas + num, Credit::compName);
+            t = true;
+            break;
+        case(3):
+            std::sort(mas, mas + num, Credit::compSecondName);
+            t = true;
+            break;
+        case(4):
+            std::sort(mas, mas + num, Credit::compSum);
+            t = true;
+            break;
+        case(5):
+            std::sort(mas, mas + num, Credit::compStavka);
+            t = true;
+            break;
+        case(6):
+            std::sort(mas, mas + num, Credit::compLength);
+            t = true;
+            break;
+        case(7):
+            std::sort(mas, mas + num, Credit::compPlatezh);
+            t = true;
+            break;
+        default:
+            errmsg();
+            break;
+            t = false;
+        }
+    } while (t == false);
+}
+/*void userSort(Credit*& mas, int const& length) {
     menu_for_sort();
     setlocale(LC_ALL, "Russian");
     SetConsoleCP(1251);
@@ -388,9 +453,9 @@ void userSort(Credit*& mas, int const& length) {
     } while (t == false);
     menu_print();
     cout << "Отсортировано!" << endl;
-}
+}*/
 
-void InputEntry(Credit*& mas, int& length) {
+void InputEntry(CreditContainer& mas, int& length) {
     cout << "1) Вручную" << endl;
     cout << "2) С файла" << endl;
     int x = input();
@@ -418,20 +483,20 @@ int main()
         int k = input();
         switch (k) {
         case(1):
-            if (l == 0) { InputEntry(m, l); }
-            else { DeleteAll(m, l); InputEntry(m, l); }
+            //if (l == 0) { InputEntry(m, l); }
+            //else { DeleteAll(m, l); InputEntry(m, l); }
             break;
         case(2):
-            if (l != 0) { mas.PrintAll(); }
+            //if (l != 0) { mas.PrintAll(); }
             break;
         case(3):
-            if (l != 0) { userSort(m, l); }
+            //if (l != 0) { userSort(m, l); }
             break;
         case(4):
-            if (l != 0) { StrokaDelete(m, l); }
+            //if (l != 0) { StrokaDelete(m, l); }
             break;
         case(5):
-            if (l != 0) { DeleteAll(m, l); }
+            //if (l != 0) { DeleteAll(m, l); }
             break;
         case(6):
             if (l != 0) {
@@ -439,11 +504,11 @@ int main()
                 cout << "Введите название выходного файла(например:Output.txt) не более 255 символов, учитывая расширение" << endl;
                 cin.ignore(255, '\n');
                 file = inputString();
-                FileOutput(m, l, file);
+                //FileOutput(m, l, file);
             }
             break;
         case(7):
-            if (l != 0) { DeleteAll(m, l); }
+            //if (l != 0) { DeleteAll(m, l); }
             x = true;
             break;
         default:
