@@ -18,7 +18,7 @@ public:
     Credit() : Surname(0), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0) {}
     Credit(char* S, string N, string SN, unsigned long long int sm, double st, int leny) {
 
-        Surname = new char[strlen(S)+1];
+        Surname = new char[strlen(S) + 1];
         strcpy_s(Surname, strlen(S) + 1, S);
         Name = N;
         SecondName = SN;
@@ -41,7 +41,7 @@ public:
     ~Credit() {
         if (Surname) { delete[] Surname; }
     }
-    void SetThings(char* S, string N, string SN, unsigned long long int sm, double st, int leny){
+    void SetThings(char* S, string N, string SN, unsigned long long int sm, double st, int leny) {
         Surname = new char[strlen(S) + 1];
         strcpy_s(Surname, strlen(S) + 1, S);
         Name = N;
@@ -55,7 +55,7 @@ public:
         return Surname;
     }
     int getSurnameLength() {
-        return (strlen(Surname)+1);
+        return (strlen(Surname) + 1);
     }
     string getName() {
         return Name;
@@ -158,7 +158,7 @@ public:
     long int getMasPerSum(int i) {
         return mas[i].getPerSum();
     }
-    void Clear(int mas_len){
+    void Clear(int mas_len) {
         if (mas) {
             delete[] mas;
         }
@@ -261,9 +261,9 @@ void ManualEntry(CreditContainer& mas, int& length) {
         cout << "Введите фамилию" << endl;
         Surname = inputString();
         cout << "Введите имя" << endl;
-        Name = inputString();
+        cin >> Name;
         cout << "Введите отчество" << endl;
-        SecondName = inputString();
+        cin >> SecondName;
         cout << "Введите сумму кредита" << endl;
         sum = input_long();
         cout << "Введите процентную ставку в год" << endl;
@@ -280,7 +280,7 @@ void ManualEntry(CreditContainer& mas, int& length) {
 }
 
 void DataOutputConsole(CreditContainer& mas, int const& length) { // ready!
-        mas.PrintAll();
+    mas.PrintAll();
 }
 
 void StrokaDelete(CreditContainer& mas, int& length) {
@@ -311,14 +311,14 @@ void StrokaDelete(CreditContainer& mas, int& length) {
 
 void FileEntry(CreditContainer& mas, int& length, char* file) {
     ifstream in(file);
-    mas.Clear(length);
     if (in.is_open()) {
         in >> length;
+        mas.Clear(length);
         for (int i = 0; i < length; i++) {
             char buff[255]{};
             in >> buff;
             char* Surname = new char[strlen(buff)];
-            strcpy_s(Surname,strlen(Surname)+1, buff);
+            strcpy_s(Surname, strlen(Surname) + 1, buff);
             memset(buff, 0, 255);
             string Name = "";
             in >> Name;
@@ -444,9 +444,9 @@ int main()
             if (l != 0) { m.PrintAll(); }
             break;
         case(3):
-            if (l != 0) { 
+            if (l != 0) {
                 menu_for_sort();
-                m.sort_all(l); 
+                m.sort_all(l);
                 menu_print();
                 cout << "Отсортировано!" << endl;
             }
