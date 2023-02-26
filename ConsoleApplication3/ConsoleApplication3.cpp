@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <Windows.h>
@@ -94,7 +95,7 @@ public:
         cout << "Переплата по кредиту составляет: " << percentSum << " условных единиц" << endl;
         cout << "+++++++++++++++++++++++++++++++++++++++++" << endl;
     }
-    static bool compSurname(const Credit& p1, const Credit& p2) { return p2.Surname < p1.Surname; }
+    static bool compSurname(const Credit& p1, const Credit& p2) { return strncmp(p2.Surname, p1.Surname, 255) > 0; }
     static bool compName(Credit& p1, Credit& p2) { return p2.Name < p1.Name; }
     static bool compSecondName(Credit& p1, Credit& p2) { return p2.SecondName < p1.SecondName; }
     static bool compSum(Credit& p1, Credit& p2) { return p2.sum < p1.sum; }
@@ -102,6 +103,7 @@ public:
     static bool compLength(Credit& p1, Credit& p2) { return p2.lengthYear < p1.lengthYear; }
     static bool compPlatezh(Credit& p1, Credit& p2) { return p2.percentSum < p1.percentSum; }
 };
+
 
 class CreditContainer {
 private:
@@ -170,10 +172,11 @@ public:
 
 char* inputString() {
     setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
     char* stringInput = new char[255];
-    cin.getline(stringInput, 255, '\n');
+    string input1 = "";
+    cin >> input1;
+    const char* c = input1.c_str();
+    strcpy(stringInput, c);
     return stringInput;
 }
 
@@ -279,10 +282,6 @@ void ManualEntry(CreditContainer& mas, int& length) {
     cout << "Успешно заполнено" << endl;
 }
 
-void DataOutputConsole(CreditContainer& mas, int const& length) { // ready!
-    mas.PrintAll();
-}
-
 void StrokaDelete(CreditContainer& mas, int& length) {
     cout << "Введите, какой элемент вы хотите удалить" << endl;
     int elDel = input();
@@ -315,11 +314,10 @@ void FileEntry(CreditContainer& mas, int& length, char* file) {
         in >> length;
         mas.Clear(length);
         for (int i = 0; i < length; i++) {
-            char buff[255]{};
+            char buff[255];
             in >> buff;
             char* Surname = new char[strlen(buff)];
-            strcpy_s(Surname, strlen(Surname) + 1, buff);
-            memset(buff, 0, 255);
+            strcpy(Surname, buff);
             string Name = "";
             in >> Name;
             string SecondName = "";
@@ -367,6 +365,7 @@ void FileOutput(CreditContainer mas, int const& length, char* file) {
     }
     out.close();
 }
+
 void CreditContainer::sort_all(const int& num) const
 {
     int x = input();
@@ -374,19 +373,19 @@ void CreditContainer::sort_all(const int& num) const
     do {
         switch (x) {
         case(1):
-            std::sort(mas, mas + num, Credit::compSurname);
+            sort(mas, mas + num, Credit::compSurname);
             t = true;
             break;
         case(2):
-            std::sort(mas, mas + num, Credit::compName);
+            sort(mas, mas + num, Credit::compName);
             t = true;
             break;
         case(3):
-            std::sort(mas, mas + num, Credit::compSecondName);
+            sort(mas, mas + num, Credit::compSecondName);
             t = true;
             break;
         case(4):
-            std::sort(mas, mas + num, Credit::compSum);
+            sort(mas, mas + num, Credit::compSum);
             t = true;
             break;
         case(5):
@@ -394,11 +393,11 @@ void CreditContainer::sort_all(const int& num) const
             t = true;
             break;
         case(6):
-            std::sort(mas, mas + num, Credit::compLength);
+            sort(mas, mas + num, Credit::compLength);
             t = true;
             break;
         case(7):
-            std::sort(mas, mas + num, Credit::compPlatezh);
+            sort(mas, mas + num, Credit::compPlatezh);
             t = true;
             break;
         default:
@@ -428,6 +427,8 @@ void InputEntry(CreditContainer& mas, int& length) {
 
 int main()
 {
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
     setlocale(LC_ALL, "Russian");
     bool x = false;
     int l = 0;
