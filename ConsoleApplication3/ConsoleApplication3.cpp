@@ -18,7 +18,6 @@ private:
 public:
     Credit() : Surname(0), Name(""), SecondName(""), sum(0), stavka(0), lengthYear(0), percentSum(0) {}
     Credit(char* S, string N, string SN, unsigned long long int sm, double st, int leny) {
-
         Surname = new char[strlen(S) + 1];
         strcpy_s(Surname, strlen(S) + 1, S);
         Name = N;
@@ -95,15 +94,8 @@ public:
         cout << "Переплата по кредиту составляет: " << percentSum << " условных единиц" << endl;
         cout << "+++++++++++++++++++++++++++++++++++++++++" << endl;
     }
-    static bool compSurname(const Credit& p1, const Credit& p2) { return strncmp(p2.Surname, p1.Surname, 255) > 0; }
-    static bool compName(Credit& p1, Credit& p2) { return p2.Name < p1.Name; }
-    static bool compSecondName(Credit& p1, Credit& p2) { return p2.SecondName < p1.SecondName; }
-    static bool compSum(Credit& p1, Credit& p2) { return p2.sum < p1.sum; }
-    static bool compStavka(Credit& p1, Credit& p2) { return p2.stavka < p1.stavka; }
-    static bool compLength(Credit& p1, Credit& p2) { return p2.lengthYear < p1.lengthYear; }
-    static bool compPlatezh(Credit& p1, Credit& p2) { return p2.percentSum < p1.percentSum; }
-};
 
+};
 
 class CreditContainer {
 private:
@@ -116,9 +108,9 @@ public:
         mas = new Credit[mas_len];
     }
     CreditContainer(const CreditContainer& cp) {
-        mas = new Credit[cp.mas_len];
         mas_len = cp.mas_len;
-        for (int i = 0; i < cp.mas_len; i++) {
+        mas = new Credit[mas_len];
+        for (int i = 0; i < mas_len; i++) {
             Credit buffer = cp.mas[i];
             mas[i].SetThings(buffer.getSurname(), buffer.getName(), buffer.getSecondName(), buffer.getSum(), buffer.getStavka(), buffer.getLen());
         }
@@ -161,13 +153,16 @@ public:
         return mas[i].getPerSum();
     }
     void Clear(int mas_len) {
-        if (mas) {
+        if (mas != nullptr) {
             delete[] mas;
         }
         mas = new Credit[mas_len];
         this->mas_len = mas_len;
     }
-    void sort_all(const int& num) const;
+    void sort_all(CreditContainer& m, const int& num) const;
+    void MasSwap(int i, int j);
+    void SelSort(int n, int flag);
+    bool cmp(int j, int min_indx, int flag);
 };
 
 char* inputString() {
@@ -366,38 +361,79 @@ void FileOutput(CreditContainer mas, int const& length, char* file) {
     out.close();
 }
 
-void CreditContainer::sort_all(const int& num) const
+void CreditContainer::MasSwap(int i, int j) {
+    Credit buffer(getMasSurname(i), getMasName(i), getMasSecondName(i), getMasSum(i), getMasStavka(i), getMasLen(i));
+    this->Set_Mas_Things(i, getMasSurname(j), getMasName(j), getMasSecondName(j), getMasSum(j), getMasStavka(j), getMasLen(j));
+    this->Set_Mas_Things(j, buffer.getSurname(), buffer.getName(), buffer.getSecondName(), buffer.getSum(), buffer.getStavka(), buffer.getLen());
+}
+
+bool CreditContainer::cmp(int j, int min_indx, int flag) {
+    switch (flag) {
+    case(1):
+        return strncmp(this->getMasSurname(j), this->getMasSurname(min_indx), 255) < 0;
+    case(2):
+        return this->getMasName(j) < this->getMasName(min_indx);
+    case(3):
+        return this->getMasSecondName(j) < this->getMasSecondName(min_indx);
+    case(4):
+        return this->getMasSum(j) > this->getMasSum(min_indx);
+    case(5):
+        return this->getMasStavka(j) > this->getMasStavka(min_indx);
+    case(6):
+        return this->getMasLen(j) > this->getMasLen(min_indx);
+    case(7):
+        return this->getMasPerSum(j) > this->getMasPerSum(min_indx);
+    default:
+        cout << "Something wrong with comparator" << endl;
+        return 0;
+    }
+}
+
+void CreditContainer::SelSort(int n, int flag) {
+    int i, j, min_indx;
+    for (i = 0; i < n - 1; i++) {
+        min_indx = i;
+        for (j = i + 1; j < n; j++) {
+            if (cmp(j, min_indx, flag))
+                min_indx = j;
+        }
+        if (min_indx != i)
+            MasSwap(min_indx, i);
+    }
+}
+
+void CreditContainer::sort_all(CreditContainer& m, const int& num) const
 {
     int x = input();
     bool t = false;
     do {
         switch (x) {
         case(1):
-            sort(mas, mas + num, Credit::compSurname);
+            m.SelSort(num, x);
             t = true;
             break;
         case(2):
-            sort(mas, mas + num, Credit::compName);
+            m.SelSort(num, x);
             t = true;
             break;
         case(3):
-            sort(mas, mas + num, Credit::compSecondName);
+            m.SelSort(num, x);
             t = true;
             break;
         case(4):
-            sort(mas, mas + num, Credit::compSum);
+            m.SelSort(num, x);
             t = true;
             break;
         case(5):
-            std::sort(mas, mas + num, Credit::compStavka);
+            m.SelSort(num, x);
             t = true;
             break;
         case(6):
-            sort(mas, mas + num, Credit::compLength);
+            m.SelSort(num, x);
             t = true;
             break;
         case(7):
-            sort(mas, mas + num, Credit::compPlatezh);
+            m.SelSort(num, x);
             t = true;
             break;
         default:
@@ -447,7 +483,7 @@ int main()
         case(3):
             if (l != 0) {
                 menu_for_sort();
-                m.sort_all(l);
+                m.sort_all(m,l);
                 menu_print();
                 cout << "Отсортировано!" << endl;
             }
